@@ -1,8 +1,8 @@
 class Follower {
   PVector pos, vel, acc;
-  float maxSpeed = 5;
+  float maxSpeed = 15;
   float maxForce = 0.2;
-  float size = random(25,35);
+  float size = random(9, 15);
   float hue = random(255);
   Follower(PVector a) {
     pos = a.copy();
@@ -39,6 +39,23 @@ class Follower {
       //fill(255);
       fill(hue, 255, 255);
     }
-    ellipse(pos.x, pos.y, size, size);
+    ellipse(pos.x, pos.y, 2*size, 2*size);
+  }
+
+
+  Food search(Food[] food) {
+    float min = width*height;
+    Food nearest = new Food();
+    for (int i=0; i<food.length; i++) {
+      float d = pos.dist(food[i].pos);
+      if (d<min) {
+        nearest = food[i];
+        min = d;
+      }
+      if (d-size-food[i].size <= 0) {
+        food[i].pos = new PVector(random(size, width-size), random(size, height-size));
+      }
+    }
+    return nearest;
   }
 }
